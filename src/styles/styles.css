@@ -51,3 +51,67 @@ header #searchSection label[for="search"].hovered {
   opacity: 1;
   transition: .3s ease-out;
 }
+
+header #searchSection input:focus {
+  outline: none;
+}
+
+header #searchSection input {
+  height: 30px;
+  width: 250px;
+  border-radius: 8px;
+  padding-left: 40px;
+  font-size: 18px;
+  transition: .3s ease-out;
+  border: 0 solid darkgray;
+}
+
+header #searchSection input:hover {
+  transition: .3s ease-out;
+  border: 5px solid darkgray;
+}
+
+main {
+  padding: 20px;
+}
+
+main .taskListClass {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+main .task {
+  width: 100%;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0.3px 0.9px rgba(0, 0, 0, 10%), 0 1.6px 3.6px rgba(0, 0, 0, 10%);
+  margin: 20px;
+}
+
+main .task.hidden {
+  display: none;
+}
+
+main .task .radio {
+  width: 20px;
+  height: 2px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  cursor: pointer;
+}
+
+main .task .radio img {
+  opacity: 0;
+  transition: .3s ease-out;
+}
+
+main .task .radio img:hover {
+  opacity: 1;
+  transition: .3s ease-out;
+}
+
