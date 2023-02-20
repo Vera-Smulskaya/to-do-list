@@ -115,3 +115,64 @@ main .task .radio img:hover {
   transition: .3s ease-out;
 }
 
+main .task#addTask #options {
+  height: 50px;
+  padding: 0 15px;
+  background: darkgray;
+  margin-top: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main .task#addTask #options #addButton {
+  background: white;
+  border-radius: 0;
+  border: 1px solid black;
+  font-size: 14px;
+  padding: 0px 10px;
+  cursor: not-allowed;
+  color: gray;
+}
+
+main .task#addTask #options #addButton:valid {
+  color: #2564cf;
+  cursor: pointer;
+}
+
+main .task .taskName {
+  height: 50px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+main .task .taskName .leftElement {
+  margin-right: 10px;
+}
+
+main .task #addTaskInput {
+  border: none;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+}
+
+main .task #addTaskInput:focus {
+  outline: none;
+}
+
+main #doneTaskList .task .radio {
+  border: 2px solid aquamarine;
+  background: aquamarine;
+}
+
+main #doneTaskList .task .radio img {
+  opacity: 1;
+}
+
+main  #doneTaskList .task .taskName {
+  text-decoration: line-through;
+}
