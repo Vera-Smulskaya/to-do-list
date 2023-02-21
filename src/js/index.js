@@ -27,6 +27,28 @@ const removeClassWithoutTimeout = (id, className) => {
   document.getElementById(id).classList.remove(className)
 }
 
+const vallidateField = (event) => {
+  if (event.target.value.length > 0) {
+    enableAddTaskButton();
+  } else {
+    disableAddTaskButton();
+  }
+  if (event.key === "Enter" || event.keyCode === 13) {
+    addNewTask();
+  }
+}
+
+const disableAddTaskButton = () => {
+  const button = document.getElementById("addButton");
+  removeClassWithoutTimeout("addButton", "valid");
+}
+
+const enableAddTaskButton = () => {
+  const button = document.getElementById("addButton");
+  addClassWithoutTimeout("addButton", "valid");
+  button.setAttribute("disabled", "");
+}
+
 const addNewTask = () => {
   const inputElement = document.getElementById('addTaskInput');
   const taskWrapper = document.createElement('div');
