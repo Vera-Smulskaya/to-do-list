@@ -5,6 +5,7 @@ window.onload = () => {
 const initialUISetup = () => {
   document.getElementById("search").addEventListener("mouseover", () => addClassWithTimeout("searchLabel", "hovered", 500));
   document.getElementById("search").addEventListener("mouseout", () => removeClassWithTimeout("searchLabel", "hovered", 500));
+  document.getElementById("search").addEventListener("keyup", (event) => searchInputHandler(event));
   document.getElementById("addTaskInput").addEventListener("keyup", (event) => vallidateField(event));
   document.getElementById("addButton").addEventListener("click", addNewTask);
   radioHandlerSetup();
@@ -99,5 +100,31 @@ const radioHandlerSetup = () => {
   for (const radio of radioButtons) {
     radio.removeEventListener("click", (event) => onRadioClick(event));
     radio.addEventListener("click", (event) => onRadioClick(event));
+  }
+}
+
+const 
+searchInputHandler = (event) => {
+  if (event.target.value.length > 0) {
+    filterTasks(event.target.value);
+  } else {
+    clearFiltration();
+  }
+}
+
+const filterTasks = (text) => {
+  const taskElementList = document.getElementsByClassName("task");
+  for (const taskElement of taskElementList) {
+    const taskTitle = taskElement.getElementsByClassName("taskTitle")[0];
+    if (!taskTitle || !taskTitle.innerHTML.includes(text)) {
+      taskElement.classList.add("hidden");
+    }
+  }
+}
+
+const clearFiltration = () => {
+  const taskElementList = document.getElementsByClassName("task");
+  for (const taskElement of taskElementList) {
+    taskElement.classList.remove("hidden");
   }
 }
