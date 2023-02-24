@@ -128,3 +128,40 @@ const clearFiltration = () => {
     taskElement.classList.remove("hidden");
   }
 }
+
+const stringConstants = {
+  localStorageKey: "taskList",
+  localStorageDoneKey: "doneTasks",
+}
+
+const storageTemplate = JSON.stringify({taskList: []})
+
+const initialStorageSetup = () => {
+const initialStorage = getStorage(stringConstants.localStorageKey);
+if (!initialStorage) {
+  localStorage.setItem(stringConstants.localStorageKey, storageTemplate);
+  localStorage.setItem(stringConstants.localStorageDoneKey, storageTemplate);
+}
+}
+
+const getTaskLocation = (id) => {
+  const activeStorage = getStorage(stringConstants.localStorageKey);
+
+  if (JSON.parse(activeStorage).taskList.find((task) => task.id.localCompare(id) === 0)) {
+    return stringConstants.localStorageKey;
+  } else {
+    return stringConstants.localStorageDoneKey;
+  }
+}
+
+export const getTaskFromStorage = (key) => {
+  const taskListString = getStorage(key);
+  if (!taskListString) {
+    initialStorageSetup();
+  }
+  return JSON.parse(getStorage(key)).taskList;
+} 
+
+export const getStorage = (key) => {
+  return localStorage.getItem(key);
+}
