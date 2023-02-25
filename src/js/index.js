@@ -154,7 +154,7 @@ const getTaskLocation = (id) => {
   }
 }
 
-export const getTaskFromStorage = (key) => {
+const getTaskFromStorage = (key) => {
   const taskListString = getStorage(key);
   if (!taskListString) {
     initialStorageSetup();
@@ -162,6 +162,26 @@ export const getTaskFromStorage = (key) => {
   return JSON.parse(getStorage(key)).taskList;
 } 
 
-export const getStorage = (key) => {
+const addTaskFromStorage = (key) => {
+  const taskListString = getStorage(key);
+  const taskList = JSON.parse(taskListString);
+  taskList.taskList.push(task);
+  localStorage.setItem(key, JSON.stringify(taskList));
+} 
+
+const removeTaskFromStorage= (id, key) => {
+  const taskListString = getStorage(key);
+  const taskList = JSON.parse(taskListString);
+  const newList = taskList.taskList.filter((task) => {
+    if (task.id.localCompare(id) === 0) {
+      addTaskFromStorage(task, key.localCompare(stringConstants.localStorageKey) === 0 ? stringConstants.localStorageDoneKey : stringConstants.localStorageKey)
+    } else {
+      return task;
+    }
+  });
+  localStorage.setItem(key, JSON.stringify({taskList : newList}));
+}
+
+const getStorage = (key) => {
   return localStorage.getItem(key);
 }
