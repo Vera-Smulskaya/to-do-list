@@ -1,5 +1,6 @@
 window.onload = () => {
   initialUISetup();
+  initialStorageSetup();
 }
 
 const initialUISetup = () => {
@@ -8,6 +9,8 @@ const initialUISetup = () => {
   document.getElementById("search").addEventListener("keyup", (event) => searchInputHandler(event));
   document.getElementById("addTaskInput").addEventListener("keyup", (event) => vallidateField(event));
   document.getElementById("addButton").addEventListener("click", addNewTask);
+  restoreTasks("taskList", stringConstants.localStorageKey);
+  restoreTasks("doneTaskList", stringConstants.localStorageDoneKey);
   radioHandlerSetup();
   }
 
@@ -59,15 +62,34 @@ const addNewTask = () => {
   const id = generateID(10);
   taskWrapper.innerHTML = getTaskTemplate(inputElement.value, id).trim();
   document.getElementById("taskList").append(taskWrapper.firstChild);
+  addTaskToStorage({id: id, value: inputElement.value}, stringConstants.localStorageKey);
   inputElement.value = "";
   disableAddTaskButton();
   document.getElementById(id).addEventListener("click", (event) => onRadioClick(event));
 }
 
+const restoreTasks = (element, key) => {
+  const taskList = getTaskFromStorage(key);
+  const taskListTemplates = taskList.map((task) => getTaskTemplate(task.value, task.id).trim());
+  const documentFragment =  document.createDocumentFragment();
+  const taskWrapper = document.createElement("div");
+  for (const task of taskListTemplates) {
+    taskWrapper.innerHTML = task;
+    documentFragment.append(taskWrapper.firstChild);
+  }
+  document.getElementById(element).append(documentFragment);
+}
+
 const changeTaskStatus = (id) => {
   const taskElement = document.getElementById(id);
+  const storageKey = getTaskStorageLocation(id);
   taskElement.remove();
-  document.getElementById("doneTaskList").append(taskElement); 
+  if (storageKey === stringConstants.localStorageKey) {
+    document.getElementById("doneTaskList").append(taskElement); 
+  } else {
+    document.getElementById("taskList").append(taskElement); 
+  }
+  removeTaskFromStorage(id, storageKey);
 }
 
 const getTaskTemplate = (value, id) => {
@@ -162,7 +184,7 @@ const getTaskFromStorage = (key) => {
   return JSON.parse(getStorage(key)).taskList;
 } 
 
-const addTaskFromStorage = (key) => {
+const addTaskToStorage = (key) => {
   const taskListString = getStorage(key);
   const taskList = JSON.parse(taskListString);
   taskList.taskList.push(task);
@@ -174,7 +196,7 @@ const removeTaskFromStorage= (id, key) => {
   const taskList = JSON.parse(taskListString);
   const newList = taskList.taskList.filter((task) => {
     if (task.id.localCompare(id) === 0) {
-      addTaskFromStorage(task, key.localCompare(stringConstants.localStorageKey) === 0 ? stringConstants.localStorageDoneKey : stringConstants.localStorageKey)
+      addTaskToStorage(task, key.localCompare(stringConstants.localStorageKey) === 0 ? stringConstants.localStorageDoneKey : stringConstants.localStorageKey)
     } else {
       return task;
     }
